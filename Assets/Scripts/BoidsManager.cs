@@ -23,39 +23,39 @@ public class BoidsManager : MonoBehaviour
     private float m_MinimumDistanceToOtherBoid = 0.1f;
 
     [Header("Large boid")]
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeAccelerationFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeDecelerationFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeMaxVelocity = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeMaxSteeringForce = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeMinimumDistanceToTarget = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeAvoidanceFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeArriveFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_LargeMinimumDistanceToOtherBoid = 0.1f;
 
     [Header("Close boid")]
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseAccelerationFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseDecelerationFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseMaxVelocity = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseMaxSteeringForce = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseMinimumDistanceToTarget = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseAvoidanceFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseArriveFactor = 0.1f;
-    [SerializeField, Range(-100, 800)]
+    [SerializeField, Range(-100, 200)]
     private float m_CloseMinimumDistanceToOtherBoid = 0.1f;
 
     private float m_CurrentAccelerationFactor;
@@ -74,6 +74,8 @@ public class BoidsManager : MonoBehaviour
     private int m_BoidsBehaviour;
 
     [Header("Manager parameters")]
+    [SerializeField]
+    private Transform m_BoidsContainer;
     [SerializeField]
     private Boid m_BoidPrefab;
     [SerializeField]
@@ -129,7 +131,7 @@ public class BoidsManager : MonoBehaviour
             Vector3 newPosition = transform.position + offset;
 
             GameObject boid = Instantiate(m_BoidPrefab.gameObject, newPosition, Quaternion.identity) as GameObject;
-            //GameObject boid = Instantiate(m_BoidPrefab.gameObject, Vector3.zero, Quaternion.identity) as GameObject;
+            boid.transform.SetParent(m_BoidsContainer);
 
             Boid boidBehaviour = boid.GetComponent<Boid>();
             boidBehaviour.SetTarget(m_Target);
@@ -160,7 +162,6 @@ public class BoidsManager : MonoBehaviour
 
         if (Input.GetAxisRaw("TL_1") > 0)
         {
-            print("TRIGGER LEFT");
             SetNewModifiers(2);
         }
 

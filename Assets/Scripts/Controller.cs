@@ -12,6 +12,11 @@ public class Controller : MonoBehaviour
     private float m_DefaultVelocity;
     [SerializeField, Range(1f, 20f)]
     private float m_FastVelocity;
+    [SerializeField, Range(0.5f, 5f)]
+    private float m_AttackCooldown;
+
+    private float m_CurrentCooldown;
+
     [Header("Target")]
     [SerializeField]
     private Transform m_Target;
@@ -111,12 +116,21 @@ public class Controller : MonoBehaviour
 
     private void Attack(Vector3 a_NewPosition)
     {
-        if (Input.GetButtonDown("RB_1"))
+        if (m_CurrentCooldown > 0)
         {
-            foreach (Boid boids in BoidsManager.Instance.Boids)
+            m_CurrentCooldown -= Time.deltaTime;
+        }
+        else 
+        {
+            if (Input.GetButtonDown("RB_1"))
             {
-                boids.GetTrailRenderer.Clear();
-                boids.transform.position = (m_Target.transform.position + a_NewPosition * m_AttackRange);
+                m_CurrentCooldown = m_AttackCooldown;
+
+                foreach (Boid boids in BoidsManager.Instance.Boids)
+                {
+                    boids.GetTrailRenderer.Clear();
+                    boids.transform.position = (m_Target.transform.position + a_NewPosition * m_AttackRange);
+                }
             }
         }
     }
