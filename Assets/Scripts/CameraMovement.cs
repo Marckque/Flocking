@@ -3,9 +3,9 @@
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField]
-    private float m_LerpVelocity;
-    [SerializeField]
     private Transform m_Target;
+    [SerializeField, Range(0.5f, 5f)]
+    private float m_CameraLerpSpeed;
 
     protected void Update()
     {
@@ -15,6 +15,6 @@ public class CameraMovement : MonoBehaviour
     private void UpdatePosition()
     {
         Vector3 newPosition = new Vector3(m_Target.transform.position.x, transform.position.y, m_Target.transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, newPosition, m_LerpVelocity * Time.deltaTime);
+        transform.position = Vector3.LerpUnclamped(transform.position, newPosition, m_CameraLerpSpeed * Time.deltaTime);
     }
 }

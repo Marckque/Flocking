@@ -51,9 +51,8 @@
      <Compile Include="Assets\Scripts\CameraMovement.cs" />
      <Compile Include="Assets\Scripts\Controller.cs" />
      <Compile Include="Assets\Scripts\ExtensionMethods.cs" />
-     <Compile Include="Assets\Scripts\FlowField.cs" />
+     <Compile Include="Assets\Scripts\Moving.cs" />
      <Compile Include="Assets\Scripts\ShowGizmos.cs" />
-     <Compile Include="Assets\Scripts\TargetSpots.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
