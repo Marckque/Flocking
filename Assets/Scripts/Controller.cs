@@ -65,7 +65,7 @@ public class Controller : MonoBehaviour
 
     private void Formations()
     {
-        if (!Input.GetButton("LB_1"))
+        if (!Input.GetButton("LB_1") || Input.GetAxisRaw("TL_1") == 0)
         {
             m_CurrentVelocity = m_DefaultVelocity;
         }
@@ -73,6 +73,11 @@ public class Controller : MonoBehaviour
         if (Input.GetButton("LB_1"))
         {
             m_CurrentVelocity = m_SlowVelocity;
+        }
+
+        if (Input.GetAxisRaw("TL_1") > 0)
+        {
+            m_CurrentVelocity = m_FastVelocity;
         }
     }
     #endregion ControllerControls

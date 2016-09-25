@@ -148,7 +148,7 @@ public class BoidsManager : MonoBehaviour
             boid.UpdateBehaviour(m_Boids);
         }
 
-        if (!Input.GetButton("TL_1") || !Input.GetButton("LB_1"))
+        if (Input.GetAxisRaw("TL_1") > 0 || !Input.GetButton("LB_1"))
         {
             SetNewModifiers(0);
         }
@@ -158,8 +158,9 @@ public class BoidsManager : MonoBehaviour
             SetNewModifiers(1);
         }
 
-        if (Input.GetButton("TL_1"))
+        if (Input.GetAxisRaw("TL_1") > 0)
         {
+            print("TRIGGER LEFT");
             SetNewModifiers(2);
         }
 
