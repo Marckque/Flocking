@@ -78,9 +78,6 @@ public class BoidsManager : MonoBehaviour
     private Boid m_BoidPrefab;
     [SerializeField]
     private int m_NumberOfBoids = 1;
-    [SerializeField]
-    private bool m_CloseFormation;
-    
 
     private List<Boid> m_Boids = new List<Boid>();
     #endregion Variables

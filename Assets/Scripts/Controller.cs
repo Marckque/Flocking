@@ -3,7 +3,9 @@
 public class Controller : MonoBehaviour
 {
     #region Variables
-    [Header("Character")]
+    [Header("Controller")]
+    [SerializeField, Range(10f, 40f)]
+    private float m_ControllerLerpSpeed;
     [SerializeField, Range(1f, 20f)]
     private float m_SlowVelocity;
     [SerializeField, Range(1f, 20f)]
@@ -13,8 +15,8 @@ public class Controller : MonoBehaviour
     [Header("Target")]
     [SerializeField]
     private Transform m_Target;
-    [SerializeField]
-    private float m_TargetSpeed;
+    [SerializeField, Range(10f, 40f)]
+    private float m_TargetLerpSpeed;
     [SerializeField, Range(1f, 20f)]
     private float m_DistanceModifier;
     [SerializeField, Range(1f, 20f)]
@@ -50,15 +52,14 @@ public class Controller : MonoBehaviour
     #region ControllerControls
     private void Movement()
     {
-        float inputX = Input.GetAxisRaw("L_XAxis_1");
-        float inputZ = Input.GetAxisRaw("L_YAxis_1");
+        float inputX = Input.GetAxis("L_XAxis_1");
+        float inputZ = Input.GetAxis("L_YAxis_1");
 
         Vector3 direction = new Vector3(inputX, 0, inputZ);
 
         if (direction != Vector3.zero)
         {
-            direction.Normalize();
-            transform.Translate(direction * m_CurrentVelocity * Time.deltaTime);
+            transform.position = Vector3.LerpUnclamped(transform.position, transform.position + (direction * m_CurrentVelocity * Time.deltaTime), m_ControllerLerpSpeed * Time.deltaTime);
         }
     }
 
@@ -92,13 +93,13 @@ public class Controller : MonoBehaviour
         if (a_NewPosition != Vector3.zero)
         {
             a_NewPosition *= m_DistanceModifier;
-            m_Target.transform.localPosition = Vector3.LerpUnclamped(m_Target.transform.localPosition, a_NewPosition, m_TargetSpeed * Time.deltaTime);
+            m_Target.transform.localPosition = Vector3.LerpUnclamped(m_Target.transform.localPosition, a_NewPosition, m_TargetLerpSpeed * Time.deltaTime);
         }
         else
         {
             if (m_Target.transform.position != Vector3.zero)
             {
-                m_Target.transform.localPosition = Vector3.LerpUnclamped(m_Target.transform.localPosition, Vector3.zero, m_TargetSpeed * Time.deltaTime);
+                m_Target.transform.localPosition = Vector3.LerpUnclamped(m_Target.transform.localPosition, Vector3.zero, m_TargetLerpSpeed * Time.deltaTime);
             }
         }
     }
