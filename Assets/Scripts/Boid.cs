@@ -164,7 +164,7 @@ public class Boid : MonoBehaviour
         
         if (distanceToTarget < m_MinimumDistanceToTarget)
         {
-            currentMaxSpeed = ExtensionMethods.Remap(m_MaxVelocity, 0, m_MaxVelocity, m_MaxVelocity, 0);
+            m_CurrentMaxSpeed = ExtensionMethods.Remap(m_MaxVelocity, 0, m_MaxVelocity, m_MaxVelocity, 0);
         }
         else
         {
