@@ -22,7 +22,7 @@ public class BoidsManager : MonoBehaviour
     [SerializeField, Range(0.1f, 10f)]
     private float m_MinimumDistanceToOtherBoid = 0.1f;
 
-    [Header("Large boid")]
+    [Header("Close boid")]
     [SerializeField, Range(-100, 200)]
     private float m_LargeAccelerationFactor = 0.1f;
     [SerializeField, Range(-100, 200)]
@@ -40,7 +40,7 @@ public class BoidsManager : MonoBehaviour
     [SerializeField, Range(-100, 200)]
     private float m_LargeMinimumDistanceToOtherBoid = 0.1f;
 
-    [Header("Close boid")]
+    [Header("Large boid")]
     [SerializeField, Range(-100, 200)]
     private float m_CloseAccelerationFactor = 0.1f;
     [SerializeField, Range(-100, 200)]

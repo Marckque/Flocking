@@ -20,7 +20,7 @@ public class Controller : MonoBehaviour
     [Header("Target")]
     [SerializeField]
     private Transform m_Target;
-    [SerializeField, Range(10f, 40f)]
+    [SerializeField, Range(1f, 40f)]
     private float m_TargetLerpSpeed;
     [SerializeField, Range(1f, 20f)]
     private float m_DistanceModifier;

@@ -20,10 +20,10 @@ public class Moving : MonoBehaviour
 
     protected void Update()
     {
-        Vector3 direction = (m_CurrentDestination.position - transform.position);
+        Vector3 direction = m_CurrentDestination.position - transform.position;
         float distance = direction.magnitude;
 
-        transform.Translate(direction.normalized * m_MovingLerpSpeed * Time.deltaTime);
+        transform.position = transform.position + (direction.normalized * m_MovingLerpSpeed * Time.deltaTime);
 
         if (distance <= m_MovingLerpSpeed * Time.deltaTime)
         {

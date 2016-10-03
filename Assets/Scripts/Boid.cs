@@ -9,6 +9,7 @@ public class Boid : MonoBehaviour
     private float m_DecelerationFactor;
     private float m_MaxSteeringForce;
     private float m_MaxVelocity;
+    private float m_CurrentMaxSpeed;
 
     // Behavior modifiers
     private float m_ArriveFactor;
@@ -22,6 +23,8 @@ public class Boid : MonoBehaviour
     private Transform m_Target;
     private Vector3 m_Acceleration;
     private Vector3 m_CurrentVelocity;
+
+    private Vector3 m_DesiredVelocity;
     #endregion Variables
 
     #region PublicGetters
@@ -124,7 +127,7 @@ public class Boid : MonoBehaviour
     {
         m_CurrentVelocity += m_Acceleration;
         Vector3.ClampMagnitude(m_CurrentVelocity, m_MaxVelocity);
-        transform.Translate(m_CurrentVelocity);
+        transform.position = transform.position + m_CurrentVelocity;
 
         m_Acceleration = Vector3.zero;
     }
@@ -156,9 +159,8 @@ public class Boid : MonoBehaviour
     private Vector3 Arrive()
     {
         Vector3 targetDirection = m_Target.transform.position - transform.position;
-
-        float distanceToTarget = targetDirection.magnitude;
-        float currentMaxSpeed = 0;
+        float distanceToTarget = targetDirection.sqrMagnitude;
+        m_CurrentMaxSpeed = 0;
         
         if (distanceToTarget < m_MinimumDistanceToTarget)
         {
@@ -166,17 +168,17 @@ public class Boid : MonoBehaviour
         }
         else
         {
-            currentMaxSpeed = m_MaxVelocity;
+            m_CurrentMaxSpeed = m_MaxVelocity;
         }
 
-        targetDirection.Normalize();
-        targetDirection *= currentMaxSpeed;
+        //targetDirection.Normalize();
+        targetDirection *= m_CurrentMaxSpeed;
 
-        Vector3 steer = targetDirection - m_CurrentVelocity;
-        steer *= m_ArriveFactor;
-        Vector3.ClampMagnitude(steer, m_MaxSteeringForce);
+        targetDirection -= m_CurrentVelocity;
+        targetDirection *= m_ArriveFactor;
+        Vector3.ClampMagnitude(targetDirection, m_MaxSteeringForce);
 
-        return steer;
+        return targetDirection;
     }
 
     private void Flow()
@@ -192,31 +194,31 @@ public class Boid : MonoBehaviour
     private Vector3 AvoidOtherBoids(List<Boid> a_Boids)
     {
         int numberOfCloseBoids = 0;
-        Vector3 desiredVelocity = new Vector3(0, 0);
+        m_DesiredVelocity = Vector3.zero;
 
         foreach (Boid otherBoid in a_Boids)
         {
             Vector3 oppositeDirection = transform.position - otherBoid.transform.position;
-            float distanceToOtherBoids = oppositeDirection.magnitude;
+            float distanceToOtherBoids = oppositeDirection.sqrMagnitude;
 
             if (distanceToOtherBoids > 0 && distanceToOtherBoids < m_MinimumDistanceToOtherBoid)
             {
                 numberOfCloseBoids++;
 
-                oppositeDirection.Normalize();
+                //oppositeDirection.Normalize();
                 oppositeDirection /= distanceToOtherBoids;
-                desiredVelocity += oppositeDirection;
+                m_DesiredVelocity += oppositeDirection;
             }
         }
 
         if (numberOfCloseBoids > 0)
         {
-            desiredVelocity /= numberOfCloseBoids;
+            m_DesiredVelocity /= numberOfCloseBoids;
 
-            Vector3 steer = desiredVelocity - m_CurrentVelocity;
-            steer *= m_AvoidanceFactor;
-            Vector3.ClampMagnitude(steer, m_MaxSteeringForce);
-            return steer;
+            m_DesiredVelocity -= m_CurrentVelocity;
+            m_DesiredVelocity *= m_AvoidanceFactor;
+            Vector3.ClampMagnitude(m_DesiredVelocity, m_MaxSteeringForce);
+            return m_DesiredVelocity;
         }
 
         return Vector3.zero;
